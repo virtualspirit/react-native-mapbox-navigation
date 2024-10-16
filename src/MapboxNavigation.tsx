@@ -7,10 +7,14 @@ import {
   StyleSheet,
   Text,
   View,
+  NativeModules,
+  findNodeHandle
 } from 'react-native';
 
 import type { MapboxNavigationProps } from './types';
 import MapboxNavigationView from './MapboxNavigationViewNativeComponent';
+
+const { MapboxNavigationViewManager } = NativeModules;
 
 // import MapboxNavigationNativeComponent, {
 //   Commands,
@@ -33,13 +37,25 @@ class MapboxNavigation extends React.Component<
   MapboxNavigationProps,
   MapboxNavigationState
 > {
+  private mapboxRef = React.createRef();
+
   constructor(props: MapboxNavigationProps) {
     super(props);
     this.createState();
+    this.recenterMap = this.recenterMap.bind(this);
   }
 
   createState() {
     this.state = { prepared: false };
+  }
+
+  recenterMap() {
+    if (this.mapboxRef.current) {
+      const reactTag = findNodeHandle(this.mapboxRef.current);
+      if (reactTag) {
+        MapboxNavigationViewManager.recenter(reactTag);
+      }
+    }
   }
 
   componentDidMount(): void {
@@ -112,11 +128,12 @@ class MapboxNavigation extends React.Component<
     return (
       <View style={style}>
         <MapboxNavigationView
+          ref={this.mapboxRef} 
           style={styles.mapbox}
           distanceUnit={distanceUnit}
           startOrigin={[startOrigin.longitude, startOrigin.latitude]}
-          destinationTitle={destination.title}
-          destination={[destination.longitude, destination.latitude]}
+          // destinationTitle={destination.title}
+          // destination={[destination.longitude, destination.latitude]}
           onLocationChange={(event) => onLocationChange?.(event.nativeEvent)}
           onRouteProgressChange={(event) =>
             onRouteProgressChange?.(event.nativeEvent)

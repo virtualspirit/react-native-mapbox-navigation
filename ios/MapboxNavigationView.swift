@@ -41,6 +41,10 @@ public class MapboxNavigationView: UIView, NavigationViewControllerDelegate {
         didSet { setNeedsLayout() }
     }
     
+    @objc public func recenter() {
+        navViewController?.recenter()
+    }
+    
     func setWaypoints(waypoints: [MapboxWaypoint]) {
       self.waypoints = waypoints.enumerated().map { (index, waypointData) in
           let name = waypointData.name as? String ?? "\(index)"
@@ -50,18 +54,18 @@ public class MapboxNavigationView: UIView, NavigationViewControllerDelegate {
       }
     }
     
-    @objc var destination: NSArray = [] {
-        didSet { setNeedsLayout() }
-    }
+    // @objc var destination: NSArray = [] {
+    //     didSet { setNeedsLayout() }
+    // }
     
     @objc var shouldSimulateRoute: Bool = false
     @objc var showsEndOfRouteFeedback: Bool = false
     @objc var showCancelButton: Bool = false
-    @objc var hideStatusView: Bool = false
+    @objc var hideStatusView: Bool = true
     @objc var mute: Bool = false
     @objc var distanceUnit: NSString = "imperial"
     @objc var language: NSString = "us"
-    @objc var destinationTitle: NSString = "Destination"
+    // @objc var destinationTitle: NSString = "Destination"
 
     @objc var onLocationChange: RCTDirectEventBlock?
     @objc var onRouteProgressChange: RCTDirectEventBlock?
@@ -104,7 +108,7 @@ public class MapboxNavigationView: UIView, NavigationViewControllerDelegate {
     }
 
     private func embed() {
-        guard startOrigin.count == 2 && destination.count == 2 else { return }
+        // guard startOrigin.count == 2 && destination.count == 2 else { return }
 
         embedding = true
 
@@ -114,8 +118,8 @@ public class MapboxNavigationView: UIView, NavigationViewControllerDelegate {
         // Add Waypoints
         waypointsArray.append(contentsOf: waypoints)
 
-        let destinationWaypoint = Waypoint(coordinate: CLLocationCoordinate2D(latitude: destination[1] as! CLLocationDegrees, longitude: destination[0] as! CLLocationDegrees), name: destinationTitle as String)
-        waypointsArray.append(destinationWaypoint)
+        // let destinationWaypoint = Waypoint(coordinate: CLLocationCoordinate2D(latitude: destination[1] as! CLLocationDegrees, longitude: destination[0] as! CLLocationDegrees), name: destinationTitle as String)
+        // waypointsArray.append(destinationWaypoint)
 
         let options = NavigationRouteOptions(waypoints: waypointsArray, profileIdentifier: .automobileAvoidingTraffic)
 
@@ -133,17 +137,24 @@ public class MapboxNavigationView: UIView, NavigationViewControllerDelegate {
                 strongSelf.onError!(["message": error.localizedDescription])
             case .success(let response):
                 strongSelf.indexedRouteResponse = response
-                let navigationOptions = NavigationOptions(simulationMode: strongSelf.shouldSimulateRoute ? .always : .never)
+                strongSelf.indexedRouteResponse = response
+                // hide top banner
+                let bottomBanner = CustomEmptyBarViewController()
+                // hide bottom banner
+                let topBanner = CustomEmptyBarViewController()
+                let navigationOptions = NavigationOptions(topBanner: topBanner, bottomBanner: bottomBanner, simulationMode: strongSelf.shouldSimulateRoute ? .always : .never)
                 let vc = NavigationViewController(for: response, navigationOptions: navigationOptions)
 
                 vc.showsEndOfRouteFeedback = strongSelf.showsEndOfRouteFeedback
+           
+                
                 StatusView.appearance().isHidden = strongSelf.hideStatusView
 
                 NavigationSettings.shared.voiceMuted = strongSelf.mute
                 NavigationSettings.shared.distanceUnit = strongSelf.distanceUnit == "imperial" ? .mile : .kilometer
 
                 vc.delegate = strongSelf
-
+                
                 parentVC.addChild(vc)
                 strongSelf.addSubview(vc.view)
                 vc.view.frame = strongSelf.bounds
@@ -190,5 +201,34 @@ public class MapboxNavigationView: UIView, NavigationViewControllerDelegate {
           "latitude": waypoint.coordinate.longitude,
         ])
         return true;
+    }
+}
+
+
+class CustomEmptyBarViewController: ContainerViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Set up the view
+        setupEmptyView()
+    }
+    
+    private func setupEmptyView() {
+        // Create an empty view
+        let emptyView = UIView()
+        emptyView.backgroundColor = .clear // Set to clear or any color you want
+        emptyView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Add the empty view to the main view
+        view.addSubview(emptyView)
+        
+        // Set constraints for the empty view to fill the parent view
+        NSLayoutConstraint.activate([
+            emptyView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            emptyView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            emptyView.topAnchor.constraint(equalTo: view.topAnchor),
+            emptyView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
 }

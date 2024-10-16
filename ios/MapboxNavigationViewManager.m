@@ -30,5 +30,6 @@ RCT_EXPORT_VIEW_PROPERTY(showCancelButton, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(language, NSString)
 RCT_EXPORT_VIEW_PROPERTY(distanceUnit, NSString)
 RCT_EXPORT_VIEW_PROPERTY(mute, BOOL)
+RCT_EXTERN_METHOD(recenter:(nonnull NSNumber *)reactTag)
 
 @end

@@ -5,6 +5,8 @@
 //  Created by Pawan Kushwaha on 10/07/2024.
 //
 
+import React
+
 @objc(MapboxNavigationViewManager)
 class MapboxNavigationViewManager: RCTViewManager {
     override func view() -> UIView! {
@@ -21,5 +23,14 @@ class MapboxNavigationViewManager: RCTViewManager {
             return
         }
         currentView.setWaypoints(waypoints: waypoints)
+    }
+    
+    @objc(recenter:)
+    public func recenter(_ reactTag: NSNumber) {
+        DispatchQueue.main.async {
+            if let navigationView = self.bridge.uiManager.view(forReactTag: reactTag) as? MapboxNavigationView {
+                navigationView.recenter()
+            }
+        }
     }
 }
