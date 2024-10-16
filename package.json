@@ -2,11 +2,9 @@
   "name": "@pawan-pk/react-native-mapbox-navigation",
   "version": "0.5.2",
   "description": "Mapbox React Native SDKs enable interactive maps and real-time, traffic-aware turn-by-turn navigation, dynamically adjusting routes to avoid congestion.",
-  "private": true,
   "main": "./src/index.tsx",
   "files": [
     "src",
-    "lib",
     "android",
     "ios",
     "cpp",
@@ -25,13 +23,9 @@
     "!**/.*"
   ],
   "scripts": {
-    "example": "yarn workspace @pawan-pk/react-native-mapbox-navigation-example",
     "test": "jest",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
-    "prepare": "bob build",
-    "release": "release-it"
+    "lint": "eslint \"**/*.{js,ts,tsx}\""
   },
   "keywords": [
     "react-native",
@@ -53,9 +47,6 @@
     "url": "https://github.com/pawan-pk/react-native-mapbox-navigation/issues"
   },
   "homepage": "https://github.com/pawan-pk/react-native-mapbox-navigation#readme",
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.5.0",
@@ -64,7 +55,6 @@
     "@types/jest": "^29.5.5",
     "@types/react": "^18.2.44",
     "commitlint": "^17.0.2",
-    "del-cli": "^5.1.0",
     "eslint": "^8.51.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
@@ -72,9 +62,6 @@
     "prettier": "^3.0.3",
     "react": "18.2.0",
     "react-native": "0.74.3",
-    "react-native-builder-bob": "^0.25.0",
-    "release-it": "^15.0.0",
-    "turbo": "^1.10.7",
     "typescript": "^5.2.2"
   },
   "resolutions": {
@@ -84,38 +71,10 @@
     "react": "*",
     "react-native": "*"
   },
-  "workspaces": [
-    "example"
-  ],
-  "packageManager": "yarn@3.6.1",
-  "jest": {
-    "preset": "react-native",
-    "modulePathIgnorePatterns": [
-      "<rootDir>/example/node_modules",
-      "<rootDir>/lib/"
-    ]
-  },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
     ]
-  },
-  "release-it": {
-    "git": {
-      "commitMessage": "chore: release ${version}",
-      "tagName": "v${version}"
-    },
-    "npm": {
-      "publish": true
-    },
-    "github": {
-      "release": true
-    },
-    "plugins": {
-      "@release-it/conventional-changelog": {
-        "preset": "angular"
-      }
-    }
   },
   "eslintConfig": {
     "root": true,
@@ -148,38 +107,9 @@
     "trailingComma": "es5",
     "useTabs": false
   },
-  "react-native-builder-bob": {
-    "source": "src",
-    "output": "lib",
-    "targets": [
-      [
-        "commonjs",
-        {
-          "esm": true
-        }
-      ],
-      [
-        "module",
-        {
-          "esm": true
-        }
-      ],
-      [
-        "typescript",
-        {
-          "project": "tsconfig.build.json"
-        }
-      ]
-    ]
-  },
   "codegenConfig": {
     "name": "RNMapboxNavigationViewSpec",
     "type": "components",
     "jsSrcsDir": "src"
-  },
-  "create-react-native-library": {
-    "type": "view-mixed",
-    "languages": "kotlin-objc",
-    "version": "0.38.1"
   }
 }
