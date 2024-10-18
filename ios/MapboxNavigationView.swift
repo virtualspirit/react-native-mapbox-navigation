@@ -54,9 +54,9 @@ public class MapboxNavigationView: UIView, NavigationViewControllerDelegate {
       }
     }
     
-    // @objc var destination: NSArray = [] {
-    //     didSet { setNeedsLayout() }
-    // }
+     @objc var destination: NSArray = [] {
+         didSet { setNeedsLayout() }
+     }
     
     @objc var shouldSimulateRoute: Bool = false
     @objc var showsEndOfRouteFeedback: Bool = false
@@ -65,7 +65,7 @@ public class MapboxNavigationView: UIView, NavigationViewControllerDelegate {
     @objc var mute: Bool = false
     @objc var distanceUnit: NSString = "imperial"
     @objc var language: NSString = "us"
-    // @objc var destinationTitle: NSString = "Destination"
+    @objc var destinationTitle: NSString = "Destination"
 
     @objc var onLocationChange: RCTDirectEventBlock?
     @objc var onRouteProgressChange: RCTDirectEventBlock?
@@ -109,7 +109,7 @@ public class MapboxNavigationView: UIView, NavigationViewControllerDelegate {
     }
 
     private func embed() {
-        // guard startOrigin.count == 2 && destination.count == 2 else { return }
+         guard startOrigin.count == 2 && destination.count == 2 else { return }
 
         embedding = true
 
@@ -119,8 +119,8 @@ public class MapboxNavigationView: UIView, NavigationViewControllerDelegate {
         // Add Waypoints
         waypointsArray.append(contentsOf: waypoints)
 
-        // let destinationWaypoint = Waypoint(coordinate: CLLocationCoordinate2D(latitude: destination[1] as! CLLocationDegrees, longitude: destination[0] as! CLLocationDegrees), name: destinationTitle as String)
-        // waypointsArray.append(destinationWaypoint)
+         let destinationWaypoint = Waypoint(coordinate: CLLocationCoordinate2D(latitude: destination[1] as! CLLocationDegrees, longitude: destination[0] as! CLLocationDegrees), name: destinationTitle as String)
+         waypointsArray.append(destinationWaypoint)
 
         let options = NavigationRouteOptions(waypoints: waypointsArray, profileIdentifier: .automobileAvoidingTraffic)
 
