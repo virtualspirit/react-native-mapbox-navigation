@@ -43,6 +43,7 @@ class MapboxNavigation extends React.Component<
     super(props);
     this.createState();
     this.recenterMap = this.recenterMap.bind(this);
+    this.onRecenter = this.onRecenter.bind(this)
   }
 
   createState() {
@@ -54,6 +55,14 @@ class MapboxNavigation extends React.Component<
       const reactTag = findNodeHandle(this.mapboxRef.current);
       if (reactTag) {
         MapboxNavigationViewManager.recenter(reactTag);
+      }
+    }
+  }
+
+  onRecenter({nativeEvent}: {nativeEvent: {recenter: boolean}}) {
+    if (typeof nativeEvent?.recenter === 'boolean') {
+      if (typeof this.props?.onRecenter === 'function') {
+        this.props.onRecenter(nativeEvent.recenter)
       }
     }
   }
@@ -134,6 +143,7 @@ class MapboxNavigation extends React.Component<
           startOrigin={[startOrigin.longitude, startOrigin.latitude]}
           destinationTitle={destination.title}
           destination={[destination.longitude, destination.latitude]}
+          onRecenter={this.onRecenter}
           onLocationChange={(event) => onLocationChange?.(event.nativeEvent)}
           onRouteProgressChange={(event) =>
             onRouteProgressChange?.(event.nativeEvent)

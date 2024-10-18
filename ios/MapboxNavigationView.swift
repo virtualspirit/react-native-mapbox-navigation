@@ -72,6 +72,7 @@ public class MapboxNavigationView: UIView, NavigationViewControllerDelegate {
     @objc var onError: RCTDirectEventBlock?
     @objc var onCancelNavigation: RCTDirectEventBlock?
     @objc var onArrive: RCTDirectEventBlock?
+    @objc var onRecenter: RCTDirectEventBlock?
     @objc var vehicleMaxHeight: NSNumber?
     @objc var vehicleMaxWidth: NSNumber?
 
@@ -142,7 +143,18 @@ public class MapboxNavigationView: UIView, NavigationViewControllerDelegate {
                 let bottomBanner = CustomEmptyBarViewController()
                 // hide bottom banner
                 let topBanner = CustomEmptyBarViewController()
-                let navigationOptions = NavigationOptions(topBanner: topBanner, bottomBanner: bottomBanner, simulationMode: strongSelf.shouldSimulateRoute ? .always : .never)
+
+              
+              let navigationOptions = NavigationOptions(topBanner: topBanner, bottomBanner: bottomBanner, simulationMode: strongSelf.shouldSimulateRoute ? .always : .never) { navigationCameraState in
+                switch navigationCameraState {
+                case .transitionToFollowing, .following:
+                  self?.onRecenter?(["recenter": true])
+                    break
+                case .idle, .transitionToOverview, .overview:
+                  self?.onRecenter?(["recenter": false])
+                    break
+                }
+              }
                 let vc = NavigationViewController(for: response, navigationOptions: navigationOptions)
 
                 vc.showsEndOfRouteFeedback = strongSelf.showsEndOfRouteFeedback
