@@ -134,6 +134,10 @@ class MapboxNavigation extends React.Component<
       ...rest
     } = this.props;
 
+    const platformProps = Platform.select({ios: {
+        onRecenter: this.onRecenter
+    }, android: {}})
+
     return (
       <View style={style}>
         <MapboxNavigationView
@@ -153,7 +157,7 @@ class MapboxNavigation extends React.Component<
             onCancelNavigation?.(event.nativeEvent)
           }
           {...rest}
-          onRecenter={this.onRecenter}
+          {...platformProps}
         />
       </View>
     );
