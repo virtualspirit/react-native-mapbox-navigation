@@ -8,7 +8,7 @@ import {
   Text,
   View,
   NativeModules,
-  findNodeHandle
+  findNodeHandle,
 } from 'react-native';
 
 import type { MapboxNavigationProps } from './types';
@@ -128,12 +128,12 @@ class MapboxNavigation extends React.Component<
     return (
       <View style={style}>
         <MapboxNavigationView
-          ref={this.mapboxRef} 
+          ref={this.mapboxRef}
           style={styles.mapbox}
           distanceUnit={distanceUnit}
           startOrigin={[startOrigin.longitude, startOrigin.latitude]}
-          // destinationTitle={destination.title}
-          // destination={[destination.longitude, destination.latitude]}
+          destinationTitle={destination.title}
+          destination={[destination.longitude, destination.latitude]}
           onLocationChange={(event) => onLocationChange?.(event.nativeEvent)}
           onRouteProgressChange={(event) =>
             onRouteProgressChange?.(event.nativeEvent)
