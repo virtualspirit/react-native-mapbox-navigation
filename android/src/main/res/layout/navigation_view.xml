@@ -27,6 +27,7 @@
     <com.mapbox.navigation.ui.components.tripprogress.view.MapboxTripProgressView
       android:id="@+id/tripProgressView"
       android:layout_width="match_parent"
+      android:visibility="invisible"
       android:layout_margin="8dp"
       android:layout_height="wrap_content" />
 
@@ -34,11 +35,76 @@
       android:id="@+id/stop"
       android:layout_width="41dp"
       android:layout_height="41dp"
+      android:visibility="invisible"
       android:layout_gravity="end|center_vertical"
       android:layout_marginEnd="12dp"
       app:srcCompat="@android:drawable/ic_delete"
       android:contentDescription="@string/delete_icon"/>
+
   </androidx.cardview.widget.CardView>
+
+  <RelativeLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="bottom|right"
+      android:orientation="vertical"
+    >
+      <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/routeOverview"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/round_button"
+        android:drawableLeft="@drawable/route_view_ic"
+        android:gravity="left|center_vertical"
+        android:textColor="@color/primary_green"
+        android:textAllCaps="false"
+        android:textSize="16dp"
+        android:paddingLeft="14dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:visibility="invisible"
+      />
+    </LinearLayout>
+  </RelativeLayout>
+
+  <RelativeLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="bottom|right"
+      android:orientation="vertical"
+    >
+      <com.mapbox.navigation.ui.components.voice.view.MapboxSoundButton
+        android:id="@+id/soundButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"/>
+
+      <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/recenter"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:background="@drawable/round_button"
+        android:drawableLeft="@drawable/recenter_ic"
+        android:fontFamily="@font/lexend"
+        android:gravity="left|center_vertical"
+        android:textColor="@color/primary_green"
+        android:textAllCaps="false"
+        android:textSize="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:drawablePadding="10dp"
+        android:visibility="invisible"
+        android:text="Re-center"/>
+    </LinearLayout>
+  </RelativeLayout>
 
   <com.mapbox.navigation.ui.components.maneuver.view.MapboxManeuverView
     android:id="@+id/maneuverView"
@@ -49,35 +115,5 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
-
-  <com.mapbox.navigation.ui.components.voice.view.MapboxSoundButton
-    android:id="@+id/soundButton"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginEnd="16dp"
-    android:visibility="invisible"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/maneuverView" />
-
-  <com.mapbox.navigation.ui.components.maps.camera.view.MapboxRouteOverviewButton
-    android:id="@+id/routeOverview"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginEnd="16dp"
-    android:visibility="invisible"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/soundButton" />
-
-  <com.mapbox.navigation.ui.components.maps.camera.view.MapboxRecenterButton
-    android:id="@+id/recenter"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:visibility="invisible"
-    android:layout_marginTop="8dp"
-    android:layout_marginEnd="16dp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/routeOverview" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

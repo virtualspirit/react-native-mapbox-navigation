@@ -56,7 +56,7 @@ import com.mapbox.navigation.ui.components.maneuver.model.ManeuverSecondaryOptio
 import com.mapbox.navigation.ui.components.maneuver.model.ManeuverSubOptions
 import com.mapbox.navigation.ui.components.maneuver.model.ManeuverViewOptions
 import com.mapbox.navigation.ui.components.maneuver.view.MapboxManeuverView
-import com.mapbox.navigation.ui.components.tripprogress.view.MapboxTripProgressView
+// import com.mapbox.navigation.ui.components.tripprogress.view.MapboxTripProgressView
 import com.mapbox.navigation.ui.maps.NavigationStyles
 import com.mapbox.navigation.ui.maps.camera.NavigationCamera
 import com.mapbox.navigation.ui.maps.camera.data.MapboxNavigationViewportDataSource
@@ -410,16 +410,16 @@ class MapboxNavigationView(private val context: ThemedReactContext): FrameLayout
           .stepDistanceTextAppearance(R.style.StepDistanceRemainingAppearance)
           .build()
 
-        binding.maneuverView.visibility = View.VISIBLE
+        binding.maneuverView.visibility = View.INVISIBLE
         binding.maneuverView.updateManeuverViewOptions(maneuverViewOptions)
         binding.maneuverView.renderManeuvers(maneuvers)
       }
     )
 
     // update bottom trip progress summary
-    binding.tripProgressView.render(
-      tripProgressApi.getTripProgress(routeProgress)
-    )
+    // binding.tripProgressView.render(
+    //   tripProgressApi.getTripProgress(routeProgress)
+    // )
 
     val event = Arguments.createMap()
     event.putDouble("distanceTraveled", routeProgress.distanceTraveled.toDouble())
@@ -578,21 +578,21 @@ class MapboxNavigationView(private val context: ThemedReactContext): FrameLayout
     }
 
     // initialize view interactions
-    binding.stop.setOnClickListener {
-      val event = Arguments.createMap()
-      event.putString("message", "Navigation Cancel")
-      context
-        .getJSModule(RCTEventEmitter::class.java)
-        .receiveEvent(id, "onCancelNavigation", event)
-    }
+    // binding.stop.setOnClickListener {
+    //   val event = Arguments.createMap()
+    //   event.putString("message", "Navigation Cancel")
+    //   context
+    //     .getJSModule(RCTEventEmitter::class.java)
+    //     .receiveEvent(id, "onCancelNavigation", event)
+    // }
 
     binding.recenter.setOnClickListener {
       navigationCamera.requestNavigationCameraToFollowing()
-      binding.routeOverview.showTextAndExtend(BUTTON_ANIMATION_DURATION)
+      // binding.routeOverview.showTextAndExtend(BUTTON_ANIMATION_DURATION)
     }
     binding.routeOverview.setOnClickListener {
       navigationCamera.requestNavigationCameraToOverview()
-      binding.recenter.showTextAndExtend(BUTTON_ANIMATION_DURATION)
+      binding.recenter.visibility = View.VISIBLE
     }
     binding.soundButton.setOnClickListener {
       // mute/unmute voice instructions
@@ -647,6 +647,16 @@ class MapboxNavigationView(private val context: ThemedReactContext): FrameLayout
     override fun onFinalDestinationArrival(routeProgress: RouteProgress) {
       onArrival(routeProgress)
     }
+  }
+
+  private fun onRecenter(){
+    navigationCamera.requestNavigationCameraToFollowing()
+    // binding.routeOverview.showTextAndExtend(BUTTON_ANIMATION_DURATION)
+    val event = Arguments.createMap()
+    event.putString("message", "recenter")
+    context
+      .getJSModule(RCTEventEmitter::class.java)
+      .receiveEvent(id, "onRecenter", event)
   }
 
   private fun onArrival(routeProgress: RouteProgress) {
@@ -724,9 +734,11 @@ class MapboxNavigationView(private val context: ThemedReactContext): FrameLayout
     mapboxNavigation?.setNavigationRoutes(routes)
 
     // show UI elements
-    binding.soundButton.visibility = View.VISIBLE
+    binding.soundButton.visibility = View.INVISIBLE
+    binding.maneuverView.visibility = View.INVISIBLE
+    binding.recenter.visibility = View.VISIBLE
     binding.routeOverview.visibility = View.VISIBLE
-    binding.tripProgressCard.visibility = View.VISIBLE
+    binding.tripProgressCard.visibility = View.INVISIBLE
 
     // move the camera to overview when new route is available
 //    navigationCamera.requestNavigationCameraToOverview()
@@ -762,7 +774,7 @@ class MapboxNavigationView(private val context: ThemedReactContext): FrameLayout
     mapboxNavigation?.setNavigationRoutes(listOf())
 
     // hide UI elements
-    binding.soundButton.visibility = View.INVISIBLE
+    // binding.soundButton.visibility = View.INVISIBLE
     binding.maneuverView.visibility = View.INVISIBLE
     binding.routeOverview.visibility = View.INVISIBLE
     binding.tripProgressCard.visibility = View.INVISIBLE
@@ -818,6 +830,6 @@ class MapboxNavigationView(private val context: ThemedReactContext): FrameLayout
   }
 
   fun setShowCancelButton(show: Boolean) {
-    binding.stop.visibility = if (show) View.VISIBLE else View.INVISIBLE
+    binding.stop.visibility = View.INVISIBLE
   }
 }
