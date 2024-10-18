@@ -143,7 +143,6 @@ class MapboxNavigation extends React.Component<
           startOrigin={[startOrigin.longitude, startOrigin.latitude]}
           destinationTitle={destination.title}
           destination={[destination.longitude, destination.latitude]}
-          onRecenter={this.onRecenter}
           onLocationChange={(event) => onLocationChange?.(event.nativeEvent)}
           onRouteProgressChange={(event) =>
             onRouteProgressChange?.(event.nativeEvent)
@@ -154,6 +153,7 @@ class MapboxNavigation extends React.Component<
             onCancelNavigation?.(event.nativeEvent)
           }
           {...rest}
+          onRecenter={this.onRecenter}
         />
       </View>
     );
