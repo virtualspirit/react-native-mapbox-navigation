@@ -43,6 +43,7 @@ class MapboxNavigation extends React.Component<
     super(props);
     this.createState();
     this.recenterMap = this.recenterMap.bind(this);
+    this.overviewMap = this.overviewMap.bind(this);
     this.onRecenter = this.onRecenter.bind(this)
   }
 
@@ -55,6 +56,15 @@ class MapboxNavigation extends React.Component<
       const reactTag = findNodeHandle(this.mapboxRef.current);
       if (reactTag) {
         MapboxNavigationViewManager.recenter(reactTag);
+      }
+    }
+  }
+
+  overviewMap() {
+    if (this.mapboxRef.current) {
+      const reactTag = findNodeHandle(this.mapboxRef.current);
+      if (reactTag) {
+        MapboxNavigationViewManager.overview(reactTag);
       }
     }
   }

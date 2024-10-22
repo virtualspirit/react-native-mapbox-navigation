@@ -33,4 +33,13 @@ class MapboxNavigationViewManager: RCTViewManager {
             }
         }
     }
+  
+    @objc(overview:)
+    public func overview(_ reactTag: NSNumber) {
+        DispatchQueue.main.async {
+            if let navigationView = self.bridge.uiManager.view(forReactTag: reactTag) as? MapboxNavigationView {
+              navigationView.overview()
+            }
+        }
+    }
 }

@@ -32,5 +32,6 @@ RCT_EXPORT_VIEW_PROPERTY(language, NSString)
 RCT_EXPORT_VIEW_PROPERTY(distanceUnit, NSString)
 RCT_EXPORT_VIEW_PROPERTY(mute, BOOL)
 RCT_EXTERN_METHOD(recenter:(nonnull NSNumber *)reactTag)
+RCT_EXTERN_METHOD(overview:(nonnull NSNumber *)reactTag)
 
 @end

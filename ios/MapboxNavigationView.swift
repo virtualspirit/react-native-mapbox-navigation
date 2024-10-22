@@ -44,6 +44,10 @@ public class MapboxNavigationView: UIView, NavigationViewControllerDelegate {
     @objc public func recenter() {
         navViewController?.recenter()
     }
+  
+    @objc public func overview() {
+        navViewController?.overview()
+    }
     
     func setWaypoints(waypoints: [MapboxWaypoint]) {
       self.waypoints = waypoints.enumerated().map { (index, waypointData) in
